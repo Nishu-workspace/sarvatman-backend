@@ -2,16 +2,17 @@ import mongoose from "mongoose";
 
 const productSchema = mongoose.Schema({
 
-    name: {
-    type:String
-    } ,
-    slug: String
-    ,
-    category:String
-    ,
-    description:String
-    ,
-   
+  name: {
+    type: String
+  },
+  slug: String
+  ,
+  category: String
+  ,
+  description: String,
+
+  features: [{ type: String }],
+
   displaySpecs: {
     type: Map,
     of: String,
@@ -21,19 +22,19 @@ const productSchema = mongoose.Schema({
   allSpecs: {
     type: Map,
     of: String,
-    default:{}
+    default: {}
   },
 
   brochreUrl: String,
 
-    status: {
+  status: {
     type: String,
     enum: ["draft", "published", "archived"],
     default: "draft",
     index: true
   }
 
-},{timestamps:true});
+}, { timestamps: true });
 
 productSchema.index({ name: "text", category: "text" });
 
