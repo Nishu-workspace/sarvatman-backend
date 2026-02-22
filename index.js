@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import routes from "./routes/index.js";
+import uploadRoutes from "./routes/upload.routes.js";
 
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json()); // parse JSON body
 connectDB();
 
 /* Routes */
+app.use("/api/upload", uploadRoutes);
 app.use("/api", routes);
 
 /* Health check */
@@ -28,7 +30,7 @@ app.get("/", (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ message: "Server error" });
-}); 
+});
 
 /* Server */
 const PORT = process.env.PORT || 5000;

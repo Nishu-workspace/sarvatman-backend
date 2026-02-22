@@ -13,11 +13,11 @@ export const getAllProducts = async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
-}; 
+};
 
 export const getAllProductsAdmin = async (req, res) => {
   try {
-    const products = await Product.find({ status: ["draft", "published","archived"] })
+    const products = await Product.find({ status: ["draft", "published", "archived"] })
       .select("name slug category description displaySpecs status brochureUrl");
 
     res.json({
@@ -50,11 +50,7 @@ export const getProductBySlug = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const {name,displaySpecs,allSpecs,brocherUrl} = req.body;
-    const obj = {
-      name,displaySpecs,allSpecs,brocherUrl
-    };
-    const product = await Product.create(obj);
+    const product = await Product.create(req.body);
 
     res.status(201).json({
       success: true,

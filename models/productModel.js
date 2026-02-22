@@ -25,7 +25,8 @@ const productSchema = mongoose.Schema({
     default: {}
   },
 
-  brochreUrl: String,
+  imageUrl: String,
+  brochureUrl: String,
 
   status: {
     type: String,
