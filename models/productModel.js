@@ -19,15 +19,10 @@ const productSchema = mongoose.Schema({
     default: {}
   },
 
-  allSpecs: {
-    type: Map,
-    of: String,
-    default: {}
-  },
 
   imageUrl: String,
   brochureUrl: String,
-
+  public_id: String,
   status: {
     type: String,
     enum: ["draft", "published", "archived"],

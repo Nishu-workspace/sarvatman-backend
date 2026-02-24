@@ -27,6 +27,7 @@ const storage = new CloudinaryStorage({
             folder: folderName,
             resource_type: resourceType,
             allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'pdf'],
+            public_id: file.originalname.split('.')[0] + '-' + Date.now(),
         };
     }
 });
