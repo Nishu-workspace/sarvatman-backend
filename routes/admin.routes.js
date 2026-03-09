@@ -7,12 +7,12 @@ import {
     getAllProducts,
     getAllProductsAdmin
 } from "../controllers/productController.js";
-import{
+import {
     getInquiry,
     updateInquiryStatus,
-   
-
-} from "../controllers/inquiryController.js" ;
+    deleteInquiry,
+    replyToInquiry
+} from "../controllers/inquiryController.js";
 
 import authAdmin from "../middlewares/authAdmin.js";
 
@@ -24,10 +24,12 @@ router.use(authAdmin);
 
 router.post("/products", createProduct);
 router.get("/", getAllProducts)
-router.get("/getall",getAllProductsAdmin)
+router.get("/getall", getAllProductsAdmin)
 router.put("/products/:id", updateProduct);
 router.delete("/products/:id", deleteProduct);
-router.get("/inquiries",getInquiry);
-router.put("/inquiries/:id",updateInquiryStatus);
+router.get("/inquiries", getInquiry);
+router.put("/inquiries/:id", updateInquiryStatus);
+router.delete("/inquiries/:id", deleteInquiry);
+router.post("/inquiries/:id/reply", replyToInquiry);
 
 export default router;
