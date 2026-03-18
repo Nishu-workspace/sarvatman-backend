@@ -11,7 +11,7 @@ const app = express();
 
 
 
-
+console.log("frontend url", process.env.FRONTEND_URL);
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -20,6 +20,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 app.use(express.json()); // parse JSON body
 
 /* Database */
