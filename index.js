@@ -9,14 +9,12 @@ dotenv.config();
 
 const app = express();
 
-/* Middleware */
-const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(",")
-  : ["http://localhost:3000"];
+
+
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
