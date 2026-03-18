@@ -11,15 +11,18 @@ const app = express();
 
 /* Middleware */
 const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(",")
-  : ["http://localhost:3000"];
+  ? process.env.FRONTEND_URL.split(",").map((o) => o.trim()).filter(Boolean)
+  : [];
+
+console.log("CORS allowed origins:", allowedOrigins.length ? allowedOrigins : "ALL (no FRONTEND_URL set)");
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: allowedOrigins.length > 0 ? allowedOrigins : true,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200,
   }),
 );
 app.use(express.json()); // parse JSON body
