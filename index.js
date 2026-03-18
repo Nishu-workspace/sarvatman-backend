@@ -5,13 +5,23 @@ import connectDB from "./config/db.js";
 import routes from "./routes/index.js";
 import uploadRoutes from "./routes/upload.routes.js";
 
-
 dotenv.config();
 
 const app = express();
 
 /* Middleware */
-app.use(cors());
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",")
+  : ["http://localhost:3000"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(express.json()); // parse JSON body
 
 /* Database */
@@ -38,4 +48,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
