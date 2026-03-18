@@ -16,31 +16,34 @@ export const createInquiry = async (req, res) => {
 
         });
 
-        // Send email to admin
-        try {
-            await sendEmail({
-                email: process.env.EMAIL_USER || "admin@example.com", // Send to admin email
-                subject: `New Inquiry from ${inquiry.customer.name}`,
-                message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
-            });
-
-            // Auto-responder to customer (if email provided)
-            if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
-                await sendEmail({
-                    email: inquiry.customer.email,
-                    subject: `Thank you for contacting Sarvatman`,
-                    message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
-                });
-            }
-        } catch (emailErr) {
-            console.error("Email sending failed:", emailErr);
-        }
-
+        // Send response immediately — don't wait for emails
         res.status(201).json({
             success: true,
             message: "Inquiry submitted successfully",
             data: inquiry
         });
+
+        // Fire-and-forget: send emails in the background
+        (async () => {
+            try {
+                await sendEmail({
+                    email: process.env.EMAIL_USER || "admin@example.com",
+                    subject: `New Inquiry from ${inquiry.customer.name}`,
+                    message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
+                });
+
+                if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
+                    await sendEmail({
+                        email: inquiry.customer.email,
+                        subject: `Thank you for contacting Sarvatman`,
+                        message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
+                    });
+                }
+            } catch (emailErr) {
+                console.error("Email sending failed:", emailErr.message);
+            }
+        })();
+
     }
     catch (err) {
         res.status(400).json({
