@@ -5,10 +5,9 @@ const productSchema = mongoose.Schema({
   name: {
     type: String
   },
-  slug: String
-  ,
-  category: String
-  ,
+  slug: String,
+  tagline: String,
+  category: String,
   description: String,
 
   features: [{ type: String }],
