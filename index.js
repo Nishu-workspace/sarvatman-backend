@@ -16,6 +16,8 @@ const allowedOrigins = process.env.FRONTEND_URL
 
 console.log("CORS allowed origins:", allowedOrigins.length ? allowedOrigins : "ALL (no FRONTEND_URL set)");
 
+
+console.log("frontend url", process.env.FRONTEND_URL);
 app.use(
   cors({
     origin: allowedOrigins.length > 0 ? allowedOrigins : true,
@@ -25,6 +27,7 @@ app.use(
     optionsSuccessStatus: 200,
   }),
 );
+
 app.use(express.json()); // parse JSON body
 
 /* Database */
