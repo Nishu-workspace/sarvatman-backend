@@ -1,5 +1,5 @@
 import Inquiry from "../models/inquirySchema.js";
-import sendEmail from "../utils/sendEmail.js";
+// import sendEmail from "../utils/sendEmail.js"; // Email feature disabled
 
 export const createInquiry = async (req, res) => {
 
@@ -23,26 +23,26 @@ export const createInquiry = async (req, res) => {
             data: inquiry
         });
 
-        // Fire-and-forget: send emails in the background
-        (async () => {
-            try {
-                await sendEmail({
-                    email: process.env.EMAIL_USER || "admin@example.com",
-                    subject: `New Inquiry from ${inquiry.customer.name}`,
-                    message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
-                });
-
-                if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
-                    await sendEmail({
-                        email: inquiry.customer.email,
-                        subject: `Thank you for contacting Sarvatman`,
-                        message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
-                    });
-                }
-            } catch (emailErr) {
-                console.error("Email sending failed:", emailErr.message);
-            }
-        })();
+        // Email notifications disabled — inquiries are stored in DB only
+        // (async () => {
+        //     try {
+        //         await sendEmail({
+        //             email: process.env.EMAIL_USER || "admin@example.com",
+        //             subject: `New Inquiry from ${inquiry.customer.name}`,
+        //             message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
+        //         });
+        //
+        //         if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
+        //             await sendEmail({
+        //                 email: inquiry.customer.email,
+        //                 subject: `Thank you for contacting Sarvatman`,
+        //                 message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
+        //             });
+        //         }
+        //     } catch (emailErr) {
+        //         console.error("Email sending failed:", emailErr.message);
+        //     }
+        // })();
 
     }
     catch (err) {
@@ -125,17 +125,17 @@ export const replyToInquiry = async (req, res) => {
             return res.status(400).json({ success: false, message: "Customer email not provided" });
         }
 
-        try {
-            await sendEmail({
-                email: inquiry.customer.email,
-                subject: `Re: Your Inquiry to Sarvatman`,
-                message: replyMessage,
-                html: `<p>Dear ${inquiry.customer.name},</p><p>${replyMessage.replace(/\n/g, '<br>')}</p><br><p>Best regards,<br>Sarvatman Team</p>`
-            });
-        } catch (emailErr) {
-            console.error("Failed to send reply email (check .env config):", emailErr);
-            // We still update the inquiry status to responded in the DB
-        }
+        // Email reply disabled
+        // try {
+        //     await sendEmail({
+        //         email: inquiry.customer.email,
+        //         subject: `Re: Your Inquiry to Sarvatman`,
+        //         message: replyMessage,
+        //         html: `<p>Dear ${inquiry.customer.name},</p><p>${replyMessage.replace(/\n/g, '<br>')}</p><br><p>Best regards,<br>Sarvatman Team</p>`
+        //     });
+        // } catch (emailErr) {
+        //     console.error("Failed to send reply email (check .env config):", emailErr);
+        // }
 
         inquiry.status = "responded";
         await inquiry.save();
