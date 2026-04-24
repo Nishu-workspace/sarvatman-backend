@@ -18,20 +18,20 @@ export const createInquiry = async (req, res) => {
 
         // Send email to admin
         try {
-            await sendEmail({
-                email: process.env.EMAIL_USER || "admin@example.com", // Send to admin email
-                subject: `New Inquiry from ${inquiry.customer.name}`,
-                message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
-            });
+            // await sendEmail({
+            //     email: process.env.EMAIL_USER || "admin@example.com", // Send to admin email
+            //     subject: `New Inquiry from ${inquiry.customer.name}`,
+            //     message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
+            // });
 
-            // Auto-responder to customer (if email provided)
-            if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
-                await sendEmail({
-                    email: inquiry.customer.email,
-                    subject: `Thank you for contacting Sarvatman`,
-                    message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
-                });
-            }
+            // // Auto-responder to customer (if email provided)
+            // if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
+            //     await sendEmail({
+            //         email: inquiry.customer.email,
+            //         subject: `Thank you for contacting Sarvatman`,
+            //         message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
+            //     });
+            // }
         } catch (emailErr) {
             console.error("Email sending failed:", emailErr);
         }
@@ -111,34 +111,34 @@ export const deleteInquiry = async (req, res) => {
     }
 };
 
-export const replyToInquiry = async (req, res) => {
-    try {
-        const inquiry = await Inquiry.findById(req.params.id);
-        if (!inquiry) return res.status(404).json({ success: false, message: "Inquiry not found" });
+// export const replyToInquiry = async (req, res) => {
+//     try {
+//         const inquiry = await Inquiry.findById(req.params.id);
+//         if (!inquiry) return res.status(404).json({ success: false, message: "Inquiry not found" });
 
-        const { replyMessage } = req.body;
+//         const { replyMessage } = req.body;
 
-        if (!inquiry.customer.email || inquiry.customer.email === "no-email@provided.com") {
-            return res.status(400).json({ success: false, message: "Customer email not provided" });
-        }
+//         if (!inquiry.customer.email || inquiry.customer.email === "no-email@provided.com") {
+//             return res.status(400).json({ success: false, message: "Customer email not provided" });
+//         }
 
-        try {
-            await sendEmail({
-                email: inquiry.customer.email,
-                subject: `Re: Your Inquiry to Sarvatman`,
-                message: replyMessage,
-                html: `<p>Dear ${inquiry.customer.name},</p><p>${replyMessage.replace(/\n/g, '<br>')}</p><br><p>Best regards,<br>Sarvatman Team</p>`
-            });
-        } catch (emailErr) {
-            console.error("Failed to send reply email (check .env config):", emailErr);
-            // We still update the inquiry status to responded in the DB
-        }
+//         try {
+//             await sendEmail({
+//                 email: inquiry.customer.email,
+//                 subject: `Re: Your Inquiry to Sarvatman`,
+//                 message: replyMessage,
+//                 html: `<p>Dear ${inquiry.customer.name},</p><p>${replyMessage.replace(/\n/g, '<br>')}</p><br><p>Best regards,<br>Sarvatman Team</p>`
+//             });
+//         } catch (emailErr) {
+//             console.error("Failed to send reply email (check .env config):", emailErr);
+//             // We still update the inquiry status to responded in the DB
+//         }
 
-        inquiry.status = "responded";
-        await inquiry.save();
+//         inquiry.status = "responded";
+//         await inquiry.save();
 
-        res.json({ success: true, message: "Reply processed successfully", data: inquiry });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
-    }
-};
+//         res.json({ success: true, message: "Reply processed successfully", data: inquiry });
+//     } catch (err) {
+//         res.status(500).json({ success: false, message: err.message });
+//     }
+// };

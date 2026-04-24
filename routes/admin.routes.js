@@ -11,7 +11,7 @@ import {
     getInquiry,
     updateInquiryStatus,
     deleteInquiry,
-    replyToInquiry
+    // replyToInquiry
 } from "../controllers/inquiryController.js";
 
 import authAdmin from "../middlewares/authAdmin.js";
@@ -30,6 +30,6 @@ router.delete("/products/:id", deleteProduct);
 router.get("/inquiries", getInquiry);
 router.put("/inquiries/:id", updateInquiryStatus);
 router.delete("/inquiries/:id", deleteInquiry);
-router.post("/inquiries/:id/reply", replyToInquiry);
+// router.post("/inquiries/:id/reply", replyToInquiry);
 
 export default router;

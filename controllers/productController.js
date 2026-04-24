@@ -3,7 +3,7 @@ import Product from "../models/productModel.js";
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({ status: "published" })
-      .select("name slug category tagline description displaySpecs imageUrl brochureUrl");
+      .select("name slug category tagline description features displaySpecs imageUrl brochureUrl");
 
     res.json({
       success: true,
@@ -17,8 +17,7 @@ export const getAllProducts = async (req, res) => {
 
 export const getAllProductsAdmin = async (req, res) => {
   try {
-    const products = await Product.find({ status: ["draft", "published", "archived"] })
-      .select("name slug category tagline description displaySpecs imageUrl status brochureUrl");
+    const products = await Product.find({ status: ["draft", "published", "archived"] });
 
     res.json({
       success: true,
