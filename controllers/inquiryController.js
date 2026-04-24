@@ -1,5 +1,5 @@
 import Inquiry from "../models/inquirySchema.js";
-import sendEmail from "../utils/sendEmail.js";
+// import sendEmail from "../utils/sendEmail.js";
 
 export const createInquiry = async (req, res) => {
 
@@ -16,25 +16,24 @@ export const createInquiry = async (req, res) => {
 
         });
 
-        // Send email to admin
-        try {
-            // await sendEmail({
-            //     email: process.env.EMAIL_USER || "admin@example.com", // Send to admin email
-            //     subject: `New Inquiry from ${inquiry.customer.name}`,
-            //     message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
-            // });
-
-            // // Auto-responder to customer (if email provided)
-            // if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
-            //     await sendEmail({
-            //         email: inquiry.customer.email,
-            //         subject: `Thank you for contacting Sarvatman`,
-            //         message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
-            //     });
-            // }
-        } catch (emailErr) {
-            console.error("Email sending failed:", emailErr);
-        }
+        // Send email functionality commented out
+        // try {
+        //     // await sendEmail({
+        //     //     email: process.env.EMAIL_USER || "admin@example.com", // Send to admin email
+        //     //     subject: `New Inquiry from ${inquiry.customer.name}`,
+        //     //     message: `You have received a new inquiry.\n\nName: ${inquiry.customer.name}\nEmail: ${inquiry.customer.email}\nPhone: ${inquiry.customer.phone}\nCompany: ${inquiry.customer.company}\n\nMessage: ${inquiry.message}`,
+        //     // });
+        //     // // Auto-responder to customer (if email provided)
+        //     // if (inquiry.customer.email && inquiry.customer.email !== "no-email@provided.com") {
+        //     //     await sendEmail({
+        //     //         email: inquiry.customer.email,
+        //     //         subject: `Thank you for contacting Sarvatman`,
+        //     //         message: `Dear ${inquiry.customer.name},\n\nThank you for reaching out to us. We have received your inquiry and our team will get back to you shortly.\n\nBest regards,\nSarvatman Team`,
+        //     //     });
+        //     // }
+        // } catch (emailErr) {
+        //     console.error("Email sending failed:", emailErr);
+        // }
 
         res.status(201).json({
             success: true,
